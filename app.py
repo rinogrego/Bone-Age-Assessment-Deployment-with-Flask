@@ -35,6 +35,18 @@ def predict():
         image = np.asarray(image) * 1.0/255
         image = np.expand_dims(image, axis=0)
         
+        # to display uploaded image
+        file = request.files['image']
+        img = Image.open(file.stream)
+        img = img.resize((224, 224))
+        img = img.convert('L')   # ie. convert to grayscale
+        buffer = io.BytesIO()
+        img.save(buffer, 'png')
+        buffer.seek(0)
+        img_data = buffer.read()
+        img_data = base64.b64encode(img_data).decode()
+        img_html = f'data:image/png;base64,{img_data}'
+        
         # get the gender
         gender_dict = {
             "male": 1,
@@ -65,27 +77,21 @@ def predict():
             
             return render_template(
                 'index.html',
+                image=img_html, 
                 filename="Filename: {}".format(request.files["image"].filename),
-                bone_age_assessment_male='Bone Age Assessment: %.2f months (male)' % float(age_prediction_m),
-                bone_age_assessment_female='Bone Age Assessment: %.2f months (female)' % float(age_prediction_f),
+                bone_age_assessment_male='Bone Age Assessment (male): %.2f months' % float(age_prediction_m),
+                bone_age_assessment_male_y='Assessment in Year: %d years, %d months' % (age_prediction_m//12, age_prediction_m%12),
+                bone_age_assessment_female='Bone Age Assessment (female): %.2f months' % float(age_prediction_f),
+                bone_age_assessment_female_y='Assessment in Year: %d years, %d months' % (age_prediction_f//12, age_prediction_f%12)
             )
-            
-        # file = request.files['image']
-        # img = Image.open(file.stream)
-        # img = img.convert('L')   # ie. convert to grayscale
-        # buffer = io.BytesIO()
-        # img.save(buffer, 'png')
-        # buffer.seek(0)
-        # img_data = buffer.read()
-        # img_data = base64.b64encode(img_data).decode()
-        # img_html = f'data:image/png;base64,{img_data}'
         
         return render_template(
             'index.html', 
-            # image=img_html, 
+            image=img_html, 
             filename="Filename: {}".format(request.files["image"].filename),
             gender="Gender: {}".format(request.form["gender"]),
-            bone_age_assessment='Bone Age Assessment: %.2f months ' % float(age_prediction)
+            bone_age_assessment='Bone Age Assessment: %.2f months ' % float(age_prediction),
+            bone_age_assessment_y='Assessment in Year: %d years, %d months' % (age_prediction//12, age_prediction%12)
         )
     
     return "Can only be accessed through POST request"
