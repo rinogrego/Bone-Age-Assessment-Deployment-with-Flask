@@ -1,4 +1,4 @@
-from flask import Flask, send_file, request, render_template, jsonify, jsonify
+from flask import Flask, request, render_template, jsonify
 import requests
 
 from tensorflow.keras.models import load_model
