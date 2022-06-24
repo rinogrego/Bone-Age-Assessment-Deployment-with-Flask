@@ -12,7 +12,7 @@
             </div>
             <div class="row mt-4">
                 <div>
-                    <form action="{{ url_for('predict') }}" id="upload-file" method="post" enctype="multipart/form-data">
+                    <form action="{{ url_for('assess') }}" id="upload-file" method="post" enctype="multipart/form-data">
                         <div class="form-group mt-2">
                             <label for="imageUpload"><b>Hand Bone X-ray Image:</b></label><br>
                             <input type="file" name="image" id="imageUpload" accept=".png, .jpg, .jpeg" class="form-control mt-2" />
