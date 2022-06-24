@@ -97,9 +97,6 @@ def assess():
 
 @app.route("/api/assess", methods=["GET", "POST"])
 def assess_api():
-    IMG_PATH = "E:/Kuliah/Semester 6/Pemodelan/Week 4/data/img"
-    FILENAME = "10000.png"
-    
     # get the POST data
     r = request.get_json(force=True)
     
