@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block form %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="row" style="text-align: center;">
+                <h2>Assess Bone Age</h2>
+            </div>
+            <div class="row mt-4">
+                <div>
+                    <form action="{{ url_for('predict') }}" id="upload-file" method="post" enctype="multipart/form-data">
+                        <div class="form-group mt-2">
+                            <label for="imageUpload"><b>Hand Bone X-ray Image:</b></label><br>
+                            <input type="file" name="image" id="imageUpload" accept=".png, .jpg, .jpeg" class="form-control-file mt-2" />
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="genderInput"><b>Gender: </b></label>
+                            <select class="form-control mt-2" id="genderInput" name="gender">
+                              <option selected disabled value="unknown">Choose</option>
+                              <option value="male">Male</option>
+                              <option value="female">Female</option>
+                              <option value="unknown">Unknown</option>
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-outline-warning mt-4">Assess</button>
+                    </form>
+                
+                    <div class="image-section" style="display:none;">
+                        <div class="img-preview">
+                            <div id="imagePreview">
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary btn-lg " id="btn-predict">Predict!</button>
+                        </div>
+                    </div>
+                
+                    <h3 id="result mt-3">
+                        <h5>Results:</h5>
+                        {{ filename }}
+                        <br>
+
+                        {% if gender %}
+                            {{ gender }} <br>
+                        {% endif %}
+
+                        {% if bone_age_assessment %}
+                            {{ bone_age_assessment }} <br>
+                        {% endif %}
+
+                        {% if bone_age_assessment_male %}
+                            {{ bone_age_assessment_male }} <br>
+                        {% endif %}
+
+                        {% if bone_age_assessment_female %}
+                            {{ bone_age_assessment_female }} <br>
+                        {% endif %}
+                    </h3>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
