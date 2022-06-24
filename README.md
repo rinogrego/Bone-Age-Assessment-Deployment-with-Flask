@@ -10,10 +10,10 @@ MobileNetV2 is used and implemented with Keras for the model and trained on [bon
 ```
 2. Install virtual environment from the terminal in the same project directory
 ```
-    pip install virutalenv
+    pip install virtualenv
     python -m venv VIRTUALENV_NAME
 ```
-3. Activate the virtual environment
+3. Activate the virtual environment from terminal
 ```
     VIRTUALENV_NAME\scripts\activate
 ```
