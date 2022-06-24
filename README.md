@@ -1,5 +1,5 @@
 # Bone Age Assessment with Flask
-Deployment of Bone Age Assessment with Flask for web page and API.
+Deployment of Bone Age Assessment with Flask as web page and API.
 
 MobileNetV2 is used and implemented with Keras for the model and trained on [bone age regression kaggle](https://www.kaggle.com/c/bone-age-regression/data) train dataset with training-validation-test ratio of 8:1:1 for 20 epochs and batch size of 128. The test MAE is around 19.32
 
