@@ -6,6 +6,7 @@ data = {
         # FILEPATH
         "image": "E:/Kuliah/Semester 6/Pemodelan/Week 4/data/img/10000.png"
     },
+    # GENDER OPTION: unknown/male/female. Unknown data will give results of each gender.
     "gender": "unknown"
 }
 r = requests.post(url, json=data)
