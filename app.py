@@ -1,4 +1,5 @@
 from flask import Flask, send_file, request, render_template, jsonify, jsonify
+import requests
 
 from tensorflow.keras.models import load_model
 
@@ -103,9 +104,11 @@ def assess_api():
     r = request.get_json(force=True)
     
     # get image
-    file_path = r['files']['image']
+    file_path_or_url = r['files']['image']
+    file_path_or_url = requests.get(file_path_or_url) # comment this for local path
     try:
-        image = Image.open(file_path)
+        # image = Image.open(file_path_or_url) # uncomment this for local path
+        image = Image.open(io.BytesIO(file_path_or_url.content)) # comment this for local path
     except:
         return jsonify({"error_message": "No Image Provided"})
     image = image.resize((224, 224))
