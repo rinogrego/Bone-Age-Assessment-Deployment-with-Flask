@@ -120,7 +120,9 @@ def assess_api():
     try:
         gender = r['gender']
     except:
-        return jsonify({"error_message": "Please Specify the Gender"})
+        return jsonify({"error_message": "Please specify the gender"})
+    if type(gender) != str or gender.lower() not in list(gender_dict.keys()):
+        return jsonify({"error_message": "Please provide a proper gender data"})
     gender = gender_dict[gender]
     gender = np.array(gender)
     gender = np.expand_dims(gender, axis=0)
