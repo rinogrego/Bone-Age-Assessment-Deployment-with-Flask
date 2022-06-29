@@ -27,7 +27,9 @@ MobileNetV2 is used and implemented with Keras for the model and trained on [bon
     python app.py
 ```
 6. To see the website navigate to your localhost from the browser (url: http://localhost:5000)
-7. If you want to check how to access the API and see how to structure the data to send as POST request, open test_request_api.py. You can run the following command from the terminal to see the example result which will be printed in the terminal (need to run step 5 first).
+
+## API
+If you want to check how to access the API and see how to structure the data to send as POST request, open test_request_api.py. You can run the following command from the terminal to see the example result which will be printed in the terminal (need to run the above instruction until step 5 first).
 ```
     python test_request_api.py
 ```
@@ -35,7 +37,7 @@ By sending POST request to the given url:
 ```
 POST /api/assess
 ```
-With the following structure:
+With the following json structure:
 ```
 {
     "files": {
