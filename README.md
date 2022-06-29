@@ -47,8 +47,8 @@ With the following json structure:
 }
 ```
 The example json responses are:
+- if gender is unknown
 ```
-// if gender is unknown
 {
     'Assessment in Year (female)': '8 years, 8 months', 
     'Assessment in Year (male)': '8 years, 9 months', 
@@ -58,8 +58,9 @@ The example json responses are:
     'Filepath': 'E:/Kuliah/Semester 6/Pemodelan/Week 4/data/img/10000.png', 
     'Gender': 'unknown'
 }
-
-// if gender is specified
+```
+- if gender is specified
+```
 {
     'Assessment in Year': '8 years, 9 months',
     'Bone Age Assessment': '105.43 months ',
@@ -67,23 +68,27 @@ The example json responses are:
     'Filepath': 'E:/Kuliah/Semester 6/Pemodelan/Week 4/data/img/10000.png',
     'Gender': 'male'
 }
-
-// if the structure of the json object to the image path or url is incorrect
+```
+- if the structure of the json object to the image path or url is incorrect
+```
 {
     "error_message": "Wrong structure of the file object"
 }
-
-// if the path or url to the image is invalid or the image not is not found
+```
+- if the path or url to the image is invalid or the image not is not found
+```
 {
     "error_message": "No image provided or invalid URL or Path"
 }
-
-// if the gender is not specified
+```
+- if the gender is not specified
+```
 {
     "error_message": "Please specify the gender"
 }
-
-// if the gender is not a string or is not either 'male', 'female', or 'unknown',
+```
+- if the gender is not a string or is not either 'male', 'female', or 'unknown'
+```
 {
     "error_message": "Please specify the gender"
 }
