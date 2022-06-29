@@ -87,7 +87,7 @@ The example json responses are:
     "error_message": "Please specify the gender"
 }
 ```
-- if the gender is not a string or is not either 'male', 'female', or 'unknown'
+- if the gender is not a string or is neither 'male', 'female', nor 'unknown'
 ```
 {
     "error_message": "Please specify the gender"
