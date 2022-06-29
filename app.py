@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 import requests
+import os
 
 from tensorflow.keras.models import load_model
 
@@ -101,13 +102,20 @@ def assess_api():
     r = request.get_json(force=True)
     
     # get image
-    file_path_or_url = r['files']['image']
-    file_path_or_url = requests.get(file_path_or_url) # comment this for local path
     try:
-        # image = Image.open(file_path_or_url) # uncomment this for local path
-        image = Image.open(io.BytesIO(file_path_or_url.content)) # comment this for local path
-    except:
-        return jsonify({"error_message": "No Image Provided"})
+        file_path_or_url = r['files']['image']
+    except KeyError:
+        return jsonify({"error_message": "Wrong structure of the file object"})
+    
+    if os.path.isfile(file_path_or_url):
+        image = Image.open(file_path_or_url)
+    else:
+        try:
+            file_path_or_url = requests.get(file_path_or_url)
+            image = Image.open(io.BytesIO(file_path_or_url.content))
+        except:
+            return jsonify({"error_message": "No image provided or invalid URL or Path"})
+        
     image = image.resize((224, 224))
     image = image.convert('RGB')
     image = np.asarray(image) * 1.0/255
