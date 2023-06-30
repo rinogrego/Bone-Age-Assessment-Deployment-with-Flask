@@ -18,6 +18,8 @@ gender_dict = {
     "unknown": -1,
 }
 
+MODEL_PATH = os.path.join("model", "PreTrained-256-256-G-64-conc-256-256_Bone-Age-MobileNetV2_bs-128_20_epochs.h5")
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -61,7 +63,7 @@ def assess():
         gender = np.expand_dims(gender, axis=0)
         
         # load model
-        model = load_model('model\PreTrained-256-256-G-64-conc-256-256_Bone-Age-MobileNetV2_bs-128_20_epochs.h5', compile=False)
+        model = load_model(MODEL_PATH, compile=False)
         
         if gender in [0, 1]:
             # if gender is specified
