@@ -2,7 +2,8 @@ from flask import Flask, request, render_template, jsonify
 import requests
 import os
 
-from tensorflow.keras.models import load_model
+import tensorflow as tf
+# from tensorflow.keras.models import load_model
 
 import numpy as np
 from PIL import Image
@@ -19,6 +20,7 @@ gender_dict = {
 }
 
 MODEL_PATH = os.path.join("model", "PreTrained-256-256-G-64-conc-256-256_Bone-Age-MobileNetV2_bs-128_20_epochs.h5")
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 
 
 @app.route('/', methods=['GET'])
@@ -63,18 +65,32 @@ def assess():
         gender = np.expand_dims(gender, axis=0)
         
         # load model
-        model = load_model(MODEL_PATH, compile=False)
+        # model = tf.keras.models.load_model(MODEL_PATH, compile=False)
         
         if gender in [0, 1]:
             # if gender is specified
             age_prediction = model.predict([image, gender])[0][0]
             
+            return render_template(
+                'index.html', 
+                image=img_html, 
+                filename="Filename: {}".format(request.files["image"].filename),
+                gender="Gender: {}".format(request.form["gender"]),
+                bone_age_assessment='Bone Age Assessment: %.2f months ' % float(age_prediction),
+                bone_age_assessment_y='Assessment in Year: %d years, %d months' % (age_prediction//12, age_prediction%12)
+            )
+            
         else:
             # if gender not specified
-            gender_m = np.expand_dims(1, axis=0)
-            gender_f = np.expand_dims(0, axis=0)
-            age_prediction_m = model.predict([image, gender_m])[0][0]
-            age_prediction_f = model.predict([image, gender_f])[0][0]
+            gender_m = tf.convert_to_tensor(np.expand_dims(1, axis=0))
+            gender_f = tf.convert_to_tensor(np.expand_dims(0, axis=0))
+            inputs_image = tf.concat([image, image], axis=0)
+            inputs_gender = tf.concat([gender_m, gender_f], axis=0)
+            # age_prediction_m = model.predict([image, gender_m])[0][0]
+            # age_prediction_f = model.predict([image, gender_f])[0][0]
+            preds = model([inputs_image, inputs_gender], training=False)
+            age_prediction_m = preds[0]
+            age_prediction_f = preds[1]
             
             return render_template(
                 'index.html',
@@ -85,15 +101,6 @@ def assess():
                 bone_age_assessment_female='Bone Age Assessment (female): %.2f months' % float(age_prediction_f),
                 bone_age_assessment_female_y='Assessment in Year (female): %d years, %d months' % (age_prediction_f//12, age_prediction_f%12)
             )
-        
-        return render_template(
-            'index.html', 
-            image=img_html, 
-            filename="Filename: {}".format(request.files["image"].filename),
-            gender="Gender: {}".format(request.form["gender"]),
-            bone_age_assessment='Bone Age Assessment: %.2f months ' % float(age_prediction),
-            bone_age_assessment_y='Assessment in Year: %d years, %d months' % (age_prediction//12, age_prediction%12)
-        )
     
     return "Can only be accessed through POST request"
 
@@ -124,7 +131,7 @@ def assess_api():
     image = np.expand_dims(image, axis=0)
     
     # load model
-    model = load_model('model\PreTrained-256-256-G-64-conc-256-256_Bone-Age-MobileNetV2_bs-128_20_epochs.h5', compile=False)
+    # model = tf.keras.models.load_model('model\PreTrained-256-256-G-64-conc-256-256_Bone-Age-MobileNetV2_bs-128_20_epochs.h5', compile=False)
     
     # get the gender info
     try:
